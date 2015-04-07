@@ -1,6 +1,11 @@
 #!/bin/bash
 
-BOOTSTRING=("fw 5 win2012ds 10 files win2012 pbx")
+BOOTSTRING=""
+if [ -f /etc/vm_starter.conf ] ; then
+	. /etc/vm_starter.conf
+fi
+BOOTVMS=("${BOOTSTRING}")
+
 AVAILVMS=$(virsh list --all | tail -n+3 | awk '{ print $2 }' | grep -v '^$')
 
 if [ -f /tmp/no_vm_start ] ; then
@@ -22,7 +27,7 @@ array_contains () {
 }
 
 COUNT=1
-for CMD in $BOOTSTRING; do
+for CMD in $BOOTVMS; do
 	echo "CMD #${COUNT}: '${CMD}'"
 	if [[ $CMD =~ ^[0-9]+$ ]] ; then
 		echo "Sleeping ${CMD} seconds..."
