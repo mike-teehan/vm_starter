@@ -20,7 +20,7 @@ if [ "$MODE" == "install" ] ; then
 	echo "vm_starter -> /etc/default"
 	cp vm_starter /etc/default/
 	echo
-	echo "Remeber to:"
+	echo "Remember to:"
 	echo "- set VM_START=true in /etc/default/vm_starter"
 	echo "- configure a boot string in /etc/vm_starter.conf"
 	echo "- add '/bin/vm_starter.sh' to the end of /etc/rc.local"
