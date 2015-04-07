@@ -1,17 +1,31 @@
 #!/bin/bash
 
+VM_START=false
+if [ -f /etc/default/vm_starter ] ; then
+	. /etc/default/vm_starter
+	if ! $VM_START; then
+		echo "VM_START is false, not starting VMs..."
+		exit 0
+	fi
+fi
+
 BOOTSTRING=""
+BOOTVMS=()
 if [ -f /etc/vm_starter.conf ] ; then
 	. /etc/vm_starter.conf
 fi
-BOOTVMS=("${BOOTSTRING}")
+if [ ${#BOOTSTRING} -gt 0 ] ; then
+	BOOTVMS=("${BOOTSTRING}")
+fi
+
+VMCNT="${#BOOTVMS[@]}"
+echo "VMCNT: ${VMCNT}"
+if ! [ $VMCNT -gt 0 ] ; then
+	echo "No VMs to boot..."
+	exit 0
+fi
 
 AVAILVMS=$(virsh list --all | tail -n+3 | awk '{ print $2 }' | grep -v '^$')
-
-if [ -f /tmp/no_vm_start ] ; then
-	Echo "/tmp/no_vm_start exists, not starting VMs..."
-	return 0
-fi
 
 array_contains () {
 	local array="$1[@]"

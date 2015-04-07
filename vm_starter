@@ -1,0 +1,6 @@
+# vm_starter
+#
+# Should vm_starter actually start the VMs?
+# This file lives in /etc/default and is sourced by vm_starter.sh
+
+# VM_START=false
