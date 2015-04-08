@@ -25,6 +25,13 @@ if ! [ $VMCNT -gt 0 ] ; then
 	exit 0
 fi
 
+while true; do
+	virsh list > /dev/null 2>&1
+	[ $? -gt 0 ] || break
+	echo "Virsh not started yet..."
+	sleep 1
+done
+
 AVAILVMS=$(virsh list --all | tail -n+3 | awk '{ print $2 }' | grep -v '^$')
 
 array_contains () {
