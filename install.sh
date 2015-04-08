@@ -18,10 +18,14 @@ if [ "$MODE" == "install" ] ; then
 	echo "Installing:"
 	echo "vm_starter.sh -> /bin"
 	cp vm_starter.sh /bin/
-	echo "vm_starter.conf -> /etc"
-	cp vm_starter.conf /etc/
-	echo "vm_starter -> /etc/default"
-	cp vm_starter /etc/default/
+	if ! [ -f /etc/vm_starter.conf ] ; then
+		echo "vm_starter.conf -> /etc"
+		cp vm_starter.conf /etc/
+	fi
+	if ! [ -f /etc/default/vm_starter ] ; then
+		echo "vm_starter -> /etc/default"
+		cp vm_starter /etc/default/
+	fi
 	echo
 	echo "Remember to:"
 	echo "- set VM_START=true in /etc/default/vm_starter"
