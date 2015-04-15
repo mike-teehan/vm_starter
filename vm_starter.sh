@@ -34,27 +34,14 @@ done
 
 AVAILVMS=$(virsh list --all | tail -n+3 | awk '{ print $2 }' | grep -v '^$')
 
-array_contains () {
-	local array="$1[@]"
-	local val=$2
-	local in=1
-	for element in "${!array}"; do
-		if [[ $element == $val ]]; then
-			in=0
-			break
-		fi
-	done
-	return $in
-}
-
 COUNT=1
-for CMD in $BOOTVMS; do
+for CMD in "${BOOTVMS[@]}"; do
 	echo "CMD #${COUNT}: '${CMD}'"
 	if [[ $CMD =~ ^[0-9]+$ ]] ; then
 		echo "Sleeping ${CMD} seconds..."
 		sleep $CMD
 	else
-		if array_contains AVAILVMS $CMD ; then
+		if [ $(echo "${AVAILVMS}" | grep "${CMD}" | wc -l) -gt 0 ] ; then
 			echo "Starting VM ${CMD}..."
 			virsh start $CMD
 		else
