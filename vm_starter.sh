@@ -15,7 +15,7 @@ if [ -f /etc/vm_starter.conf ] ; then
 	. /etc/vm_starter.conf
 fi
 if [ ${#BOOTSTRING} -gt 0 ] ; then
-	BOOTVMS=("${BOOTSTRING}")
+	BOOTVMS=(${BOOTSTRING})
 fi
 
 VMCNT="${#BOOTVMS[@]}"
