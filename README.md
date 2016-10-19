@@ -7,7 +7,7 @@ $ cd vm_starter
 $ sudo ./install.sh
 ```
 Use the text editor of your choice to manually add the following line to /etc/rc.local before the 'exit 0' line:
-> /bin/vm_starter.sh &  
+> /bin/vm_starter.sh > /tmp/vm_starter.log 2>&1 &
 
 ### 2 - Configuration:
 #### /etc/vm_starter.conf:
