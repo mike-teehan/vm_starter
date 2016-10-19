@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# read command line option
+SHUTDOWN=false
+if [ "$1" == "--shutdown" ]; then
+	SHUTDOWN=true
+fi
+
+# check defaults to see if we are enabled
 VM_START=false
 if [ -f /etc/default/vm_starter ] ; then
 	. /etc/default/vm_starter
@@ -9,10 +16,15 @@ if [ -f /etc/default/vm_starter ] ; then
 	fi
 fi
 
+# parse the conf file
 BOOTSTRING=""
 BOOTVMS=()
 if [ -f /etc/vm_starter.conf ] ; then
 	. /etc/vm_starter.conf
+fi
+# if we are shutting down, reverse the boot string
+if [ $SHUTDOWN = true ]; then
+	BOOTSTRING=$(echo "${BOOTSTRING}" | awk '{ for(i=NF; i>0; i--) printf("%s ", $i); }')
 fi
 if [ ${#BOOTSTRING} -gt 0 ] ; then
 	BOOTVMS=(${BOOTSTRING})
@@ -42,8 +54,13 @@ for CMD in "${BOOTVMS[@]}"; do
 		sleep $CMD
 	else
 		if [ $(echo "${AVAILVMS}" | grep "${CMD}" | wc -l) -gt 0 ] ; then
-			echo "Starting VM ${CMD}..."
-			virsh start $CMD
+			if ! $SHUTDOWN; then
+				echo "Starting VM ${CMD}..."
+				virsh start $CMD
+			else
+				echo "Shutting down VM ${CMD}..."
+				virsh shutdown $CMD
+			fi
 		else
 			echo "VM ${CMD} not found..."
 		fi
