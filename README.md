@@ -24,13 +24,16 @@ Be sure to use only "true" or "false", as Bash doesn't have the greatest handlin
 ```
 VM_START=(false|true)
 ```
-### 3 - Removal:
+### 3 - Orderly Shutdown
+A user with virsh access may run '/bin/vm_starter.sh --shutdown' to attempt an orderly shutdown of the VMs. The BOOTSTRING is executed in reverse, shutting down VMs instead of starting them.
+
+### 4 - Removal:
 Use the install script with a '-u' parameter to permanently the files previously installed. 
 ```
 $ sudo ./install.sh -u
 ```
 
-### 4 - License:
+### 5 - License:
 This software is copyright Mike Teehan (<mike.teehan@gmail.com>) in the year 2015.  
 It is licensed under the GPL v2. Please see the included LICENSE file and know your rights.
 
