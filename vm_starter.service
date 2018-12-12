@@ -1,0 +1,16 @@
+[Unit]
+Description=Start the VMs in an orderly fashion once we have network
+Wants=network-online.target
+After=network.target network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/vm_starter/vm_starter.sh
+RemainAfterExit=true
+ExecStop=/opt/vm_starter/vm_starter.sh --shutdown
+StandardOutput=journal
+DefaultTimeoutStartSec=120s
+DefaultTimeoutStopSec=300s
+
+[Install]
+WantedBy=multi-user.target
